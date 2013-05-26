@@ -98,7 +98,7 @@ create schema totaltourists as (imsi string, staydays long);
 
 @Name('totaltourists')
 insert into totaltourists
-select distinct t1.imsi as imsi, t1.staydays as staydays from tourists1.win:length(100) as t1, tourists2.win:length(100) as t2;
+select distinct t1.imsi as imsi, t1.staydays as staydays from tourists1.win:time(10 days) as t1, tourists2.win:time(10 days) as t2;
 
 
 @Name('totaltouristsnodup')
