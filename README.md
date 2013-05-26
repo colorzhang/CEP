@@ -3,4 +3,107 @@ CEP
 
 Stream Computing and Complex Event Processing thoughts &amp; practices
 
+
+Esper code
+===
+~~~~~
+module winston.cep.esper;
+
+import winston.cep.esper.*;
+import java.sql.Timestamp;
+
+
+create schema tour3 as (imsi string, signalingTime string, lac string, cell string, mytime string, durations long);
+
+@Name('tour3')
+insert into tour3
+SELECT
+  imsi,
+	signalingTime,
+	lac,
+	cell,
+	mytime,
+	durations
+FROM TourEvent 
+MATCH_RECOGNIZE 
+(
+    PARTITION BY imsi
+	MEASURES
+		enter.imsi as imsi,
+		enter.signalingTime as signalingTime,
+		enter.lac as lac,
+		enter.cell as cell,
+		leave.mytime as mytime,
+		Timestamp.valueOf(leave.mytime).getTime() - Timestamp.valueOf(enter.mytime).getTime() as durations
+	PATTERN (enter intour* leave)
+ 	DEFINE
+ 		enter AS (enter.cell = 'tourist') and (enter.mytime.substring(11) >= '08') and (enter.mytime.substring(11) <= '18'),
+		intour AS (intour.cell = 'tourist') and (intour.mytime.substring(11) >= '08') and (intour.mytime.substring(11) <= '18'),
+		leave AS ((NOT (leave.cell = 'tourist') or (leave.mytime.substring(11) > '18')) or (leave.mytime.substring(0,10) > enter.mytime.substring(0,10)))
+);
+
+
+create schema tour5 as (imsi string, signalingTime string, lac string, cell string, mytime string, durations long);
+
+@Name('tour5')
+insert into tour5
+SELECT
+	imsi,
+	signalingTime,
+	lac,
+	cell,
+	mytime,
+	durations
+FROM TourEvent 
+MATCH_RECOGNIZE 
+(
+    PARTITION BY imsi
+	MEASURES
+		enter.imsi as imsi,
+		enter.signalingTime as signalingTime,
+		enter.lac as lac,
+		enter.cell as cell,
+		leave.mytime as mytime,
+		Timestamp.valueOf(leave.mytime).getTime() - Timestamp.valueOf(enter.mytime).getTime() as durations
+	PATTERN (enter intour* leave)
+ 	DEFINE
+ 		enter AS (enter.cell = "tourist") and (enter.mytime.substring(11) >= "18"),
+ 		intour AS ((intour.cell = "tourist") and ((intour.mytime.substring(11) <= "08") or (intour.mytime.substring(11) >= "18")) and (intour.mytime.substring(0,10) >= enter.mytime.substring(0,10))),
+ 		leave AS ((NOT (leave.cell = "tourist")) or (leave.mytime.substring(11) > "08" and (leave.mytime.substring(0,10) > enter.mytime.substring(0,10))))
+);
+
+
+create schema tourists1 as (imsi string, staydays long);
+
+@Name('tourists1')
+insert into tourists1
+SELECT imsi, count(*) as staydays
+FROM tour3.win:time(10 days)
+WHERE durations >= 3*3600*1000
+GROUP by imsi
+HAVING count(*) >= 5;
+
+create schema tourists2 as (imsi string, staydays long);
+
+@Name('tourists2')
+insert into tourists2
+SELECT imsi, count(*) as staydays
+FROM tour5.win:time(10 days)
+WHERE durations >= 5*3600*1000
+GROUP by imsi
+HAVING count(*) >= 5;
+
+
+create schema totaltourists as (imsi string, staydays long);
+
+@Name('totaltourists')
+insert into totaltourists
+select distinct t1.imsi as imsi, t1.staydays as staydays from tourists1.win:length(100) as t1, tourists2.win:length(100) as t2;
+
+
+@Name('totaltouristsnodup')
+select * from totaltourists.std:firstunique(imsi);
+
+~~~~~
+
 colorzhang@gmail.com
