@@ -5,7 +5,7 @@ Stream Computing and Complex Event Processing thoughts &amp; practices
 
 Scenario
 ===
-案例2：实时统计景区内游客人数
+案例：实时统计景区内游客人数
  
 判断规则：
  
