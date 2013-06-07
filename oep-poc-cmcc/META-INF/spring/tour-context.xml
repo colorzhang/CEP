@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:wlevs="http://www.bea.com/ns/wlevs/spring" xmlns:jdbc="http://www.oracle.com/ns/ocep/jdbc"
+	xmlns:spatial="http://www.oracle.com/ns/ocep/spatial"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/osgi
+  http://www.springframework.org/schema/osgi/spring-osgi.xsd
+  http://www.bea.com/ns/wlevs/spring
+  http://www.bea.com/ns/wlevs/spring/spring-wlevs-v11_1_1_7.xsd
+  http://www.oracle.com/ns/ocep/jdbc
+  http://www.oracle.com/ns/ocep/jdbc/ocep-jdbc.xsd
+  http://www.oracle.com/ns/ocep/spatial
+  http://www.oracle.com/ns/ocep/spatial/ocep-spatial.xsd">
+
+	<wlevs:event-type-repository>
+		<wlevs:event-type type-name="TourEvent">
+			<wlevs:properties>
+				<wlevs:property name="imsi" type="char" length="256" />
+				<wlevs:property name="signalingTime" type="bigint" />
+				<wlevs:property name="lac" type="char" length="256" />
+				<wlevs:property name="cell" type="char" length="256" />
+				<wlevs:property name="mytime" type="char" length="256" />
+			</wlevs:properties>
+		</wlevs:event-type>
+		<wlevs:event-type type-name="TourEvent2">
+			<wlevs:properties>
+				<wlevs:property name="imsi" type="char" length="256" />
+				<wlevs:property name="signalingTime" type="bigint" />
+				<wlevs:property name="lac" type="char" length="256" />
+				<wlevs:property name="cell" type="char" length="256" />
+				<wlevs:property name="mytime" type="char" length="256" />
+				<wlevs:property name="durations" type="long" />
+			</wlevs:properties>
+		</wlevs:event-type>
+		<wlevs:event-type type-name="TourEvent3">
+			<wlevs:properties>
+				<wlevs:property name="imsi" type="char" length="256" />
+				<!-- <wlevs:property name="durations" type="long" /> -->
+				<wlevs:property name="staydays" type="int" />
+			</wlevs:properties>
+		</wlevs:event-type>
+		<wlevs:event-type type-name="TourEvent4">
+			<wlevs:properties>
+				<wlevs:property name="imsi" type="char" />
+			</wlevs:properties>
+		</wlevs:event-type>
+	</wlevs:event-type-repository>
+
+	<wlevs:adapter id="CsvAdapter" provider="csvgen">
+		<wlevs:listener ref="signalChannel" />
+		<wlevs:instance-property name="port" value="9300" />
+		<wlevs:instance-property name="eventTypeName" value="TourEvent" />
+		<wlevs:instance-property name="eventPropertyNames"
+			value="imsi,signalingTime,lac,cell,mytime" />
+	</wlevs:adapter>
+	
+	<bean id="out" class="com.poc.scenic.MyEventListener" />
+
+	<wlevs:channel id="signalChannel" event-type="TourEvent">
+		<wlevs:listener ref="processor" />
+		<wlevs:application-timestamped>
+			<wlevs:expression>to_timestamp(mytime, "yyyy-MM-dd HH:mm:ss.SSS")</wlevs:expression>
+		</wlevs:application-timestamped>
+	</wlevs:channel>
+	
+	<wlevs:processor id="processor">
+		<wlevs:listener ref="outputChannel" />
+	</wlevs:processor>
+	
+	<wlevs:channel id="outputChannel" event-type="TourEvent3">
+		<wlevs:listener ref="out" />
+	</wlevs:channel>
+</beans>
+

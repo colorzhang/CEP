@@ -1,0 +1,5 @@
+DELEGATES_PREFERENCE=delegateValidatorListorg.eclipse.wst.xsd.core.internal.validation.eclipse.XSDDelegatingValidator\=org.eclipse.wst.xsd.core.internal.validation.eclipse.Validator;org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLDelegatingValidator\=org.eclipse.wst.wsdl.validation.internal.eclipse.Validator;
+USER_BUILD_PREFERENCE=enabledBuildValidatorListcom.bea.wlevs.eclipse.tools.ui.internal.epl.validator.EPLValidator;org.eclipse.wst.xml.core.internal.validation.eclipse.Validator;com.bea.wlevs.eclipse.tools.ui.internal.epn.sourceeditor.EPNValidator;com.bea.wlevs.eclipse.tools.ui.internal.probes.sourceeditor.ProbeKitValidator;
+USER_MANUAL_PREFERENCE=enabledManualValidatorListcom.bea.wlevs.eclipse.tools.ui.internal.epl.validator.EPLValidator;org.eclipse.wst.xml.core.internal.validation.eclipse.Validator;com.bea.wlevs.eclipse.tools.ui.internal.epn.sourceeditor.EPNValidator;
+USER_PREFERENCE=overrideGlobalPreferencestruedisableAllValidationfalseversion1.1.102.v200709122200
+eclipse.preferences.version=1
