@@ -233,7 +233,7 @@ select * from totaltourists.std:firstunique(imsi);
 Test Run
 ===
 
-Total 11520000 events, run 6-7 minutes on X230 (OEP CPU ~70%, Esper CPU ~40%)
+Total 11,520,000 events, run 6-7 minutes on X230 (OEP CPU ~70%, Esper CPU ~40%, default config)
 
 100001034128669,1359590369476,chy,airport,2013-01-30 23:59:29.476
 100001034736332,1359590372038,chy,mall,2013-01-30 23:59:32.038
