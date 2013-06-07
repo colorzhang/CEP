@@ -252,7 +252,7 @@ TODO
 
 Reference
 ===
-* Product Docs (dev & admin guide, CQL/EPL ref, Esper ref/faq/solution patterns ...)
+* Product Docs (OEP dev & admin guide, CQL/EPL ref, Esper ref/faq/solution patterns ...)
 * Books (Getting started with OEP, EPIA, Event Processing for Business-Organizing the Real Time Enterprise ...)
 * DEBS 2010-2013 conference
 * EP-TS
