@@ -256,5 +256,6 @@ Reference
 * Books (Getting started with OEP, EPIA, Event Processing for Business-Organizing the Real Time Enterprise ...)
 * DEBS 2010-2013 conference
 * EP-TS
+* The CQL Continuous Query Language: Semantic Foundations and Query Execution, http://ilpubs.stanford.edu:8090/758/
 
 colorzhang@gmail.com
