@@ -244,4 +244,17 @@ Total 11,520,000 events, run 6-7 minutes on X230 (~30,000 events/s, OEP CPU ~70%
 100001031030604,1359590379600,shy,company,2013-01-30 23:59:39.600
 ...
 
+TODO
+===
+* Code & logic refine
+* Performance tuning
+* Scalability & High availability
+
+Reference
+===
+* Product Docs (dev & admin guide, CQL/EPL ref, Esper ref ...)
+* Books (Getting started with OEP, EPIA, Event Processing for Business-Organizing the Real Time Enterprise ...)
+* DEBS 2010-2013 conference
+* EP-TS
+
 colorzhang@gmail.com
